@@ -30,7 +30,7 @@ var imageTexture:ImageTexture = null
 imageTexture = DisplayObjectUtil.getScreenShotImageTexture(self)
 
 var duration = 0.5
-var pattern = "res://res/shader_images/squares.png"
+var pattern = "res://shader_images/squares.png"
 var fadeType = TransitionSprite.FadeType.Blend
 var fadeDirection = TransitionSprite.FadeDirection.Out
 var sprite:TransitionSprite = TransitionSprite.new(fadeType, fadeDirection, duration, pattern)
