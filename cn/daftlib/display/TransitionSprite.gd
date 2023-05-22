@@ -27,7 +27,7 @@ func _init(type:FadeType, direction:FadeDirection, duration:float, shaderPattern
 	
 	self._fade_time_seconds = duration if self._type != FadeType.Instant else 0
 	self._shader_pattern = shaderPattern
-#	
+	
 	self.centered = false
 	
 	if self._type == FadeType.Blend:
