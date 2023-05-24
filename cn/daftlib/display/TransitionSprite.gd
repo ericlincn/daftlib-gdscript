@@ -13,7 +13,7 @@ enum FadeDirection {
 	Out
 }
 
-signal TransitionComplete
+signal complete
 
 var _total_time:float
 var _fade_time_seconds:float
@@ -44,7 +44,7 @@ func _loadShader():
 
 func _process(delta:float):
 	if _total_time >= _fade_time_seconds:
-		self.TransitionComplete.emit()
+		self.complete.emit()
 		queue_free()
 	
 	_total_time += delta
