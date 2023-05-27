@@ -40,5 +40,5 @@ self.add_child(sprite)
 var scale = DisplayObjectUtil.getCorrectionForAspectRatio(imageTexture)
 sprite.scale = scale
 
-sprite.complete.connect(_onTransOutComplete)
+sprite.complete.connect(_onTransComplete)
 ```
