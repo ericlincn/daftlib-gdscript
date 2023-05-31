@@ -26,6 +26,7 @@ func onProgress(percent):
 
 Transition Sprite
 ```gdscript
+
 var imageTexture:ImageTexture = null
 imageTexture = DisplayObjectUtil.getScreenShotImageTexture(self)
 
@@ -41,4 +42,27 @@ var scale = DisplayObjectUtil.getCorrectionForAspectRatio(imageTexture)
 sprite.scale = scale
 
 sprite.complete.connect(_onTransComplete)
+```
+
+Simplify usage of UDP, and implemented heartbeat protocol
+```gdscript
+# Server side
+var server:UDPServerController = UDPServerController.new()
+server.message.connect(_onClientMessage)
+self.add_child(server)
+
+func _onClientMessage(content:String):
+	_append_text(content)
+```
+```gdscript
+# Client side
+var client:UDPClient = UDPClient.new()
+client.message.connect(_onServerMessage)
+self.add_child(client)
+
+func _onServerMessage(content:String):
+	print(content)
+
+func _sendMessageToServer(content:String):
+	client.send_package(content)
 ```
