@@ -2,8 +2,9 @@ class_name UDPServerController
 
 extends Node
 
-const MAX_ALIVE_TIMEOUT:int = 0
-const PULSE_MESSAGE:String = "[UDPServerController] Pulse"
+const MAX_ALIVE_TIMEOUT:int = 1
+const SERVER_PREFIX:String = "[UDP_SERVER_CONTROLLER] "
+const PULSE_MESSAGE:String = SERVER_PREFIX + "Pulse"
 
 signal message(content:String)
 
@@ -27,7 +28,7 @@ func _process(_delta):
 		message.emit("Accepted: %s:%s" % [peer.get_packet_ip(), peer.get_packet_port()])
 		message.emit(packet.get_string_from_utf8())
 		# Reply so it knows we received the message.
-		peer.put_packet("[UDPServerController] Client connected".to_utf8_buffer())
+		peer.put_packet((SERVER_PREFIX + "Client connected").to_utf8_buffer())
 		# Keep a reference so we can keep contacting the remote peer.
 		var data:PeerData = PeerData.new()
 		data.peer = peer
