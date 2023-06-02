@@ -66,3 +66,22 @@ func _onServerMessage(content:String):
 func _sendMessageToServer(content:String):
 	client.send_package(content)
 ```
+
+Address
+```gdscript
+var address:Address = Address.new()
+address.change.connect(on_address_change)
+address.setValue("/learn/")
+address.setValue("")
+address.setValue("/blog/articles/godot")
+address.up()
+address.setValue("contact")
+address.setValue("news")
+address.back()
+address.setValue("/about")
+address.forward()
+address.back()
+
+func on_address_change(value):
+	print(value)
+```
