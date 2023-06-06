@@ -35,7 +35,7 @@ func _init(type:FadeType, direction:FadeDirection, duration:float, shaderPattern
 
 func _loadShader():
 	var shader_material = ShaderMaterial.new()
-	shader_material.shader = preload("../shaders/dissolve2d.gdshader")
+	shader_material.shader = preload("../shaders/dissolve.gdshader")
 	shader_material.set_shader_parameter("dissolve_texture", texture)
 	self.material = shader_material
 
