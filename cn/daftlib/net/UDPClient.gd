@@ -8,11 +8,17 @@ var connected:bool:
 	get:
 		return _connected
 
+var _host:String
+var _port:int
 var _udp := PacketPeerUDP.new()
 var _connected:bool = false
 
+func _init(host:String = "127.0.0.1", port:int = 4242):
+	_host = host
+	_port = port
+
 func _ready():
-	_udp.connect_to_host("127.0.0.1", 4242)
+	_udp.connect_to_host(_host, _port)
 
 func _exit_tree():
 	_udp.close()

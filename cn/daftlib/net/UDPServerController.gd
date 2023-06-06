@@ -8,12 +8,16 @@ const PULSE_MESSAGE:String = SERVER_PREFIX + "Pulse"
 
 signal message(content:String)
 
+var _port:int
 var _server := UDPServer.new()
 var _peers:Array[PeerData] = []
 var _pulse_count:int = 0
 
+func _init(port:int = 4242):
+	_port = port
+
 func _ready():
-	_server.listen(4242)
+	_server.listen(_port)
 	var timer:Timer = Timer.new()
 	self.add_child(timer)
 	timer.timeout.connect(_pulse_peers)
