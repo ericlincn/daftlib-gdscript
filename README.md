@@ -86,11 +86,11 @@ func on_address_change(value):
 	print(value)
 ```
 
-AudioPlayer
+MP3Player
 ```gdscript
-# Add AudioPLayer as Autoload
-AudioPlayer.playMusic("res://music/title.mp3")
-AudioPlayer.playSound("res://sound/hit.mp3")
-AudioPlayer.stopAll()
-SoundUtil.setVolumeForBus(AudioPlayer.MUSIC, -10)
+# Add MP3PLayer as Autoload
+MP3Player.playMusic("res://music/title.mp3")
+MP3Player.playSound("res://sound/hit.mp3")
+MP3Player.stopAll()
+SoundUtil.setVolumeForBus(MP3Player.MUSIC, -10)
 ```
