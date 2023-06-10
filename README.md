@@ -86,6 +86,39 @@ func on_address_change(value):
 	print(value)
 ```
 
+Scenes Navigator
+```json
+{
+	"scenes": [
+		{
+			"id": "scene1",
+			"packed_res": "res://assets/scenes/scene1.tscn",
+			"music": "",
+			"dialogues": []
+		},
+		{
+			"id": "scene2",
+			"packed_res": "res://assets/scenes/scene2.tscn",
+			"music": "",
+			"dialogues": []
+		},
+		{
+			"id": "scene3",
+			"packed_res": "res://assets/scenes/scene3.tscn",
+			"music": "",
+			"dialogues": []
+		}
+	]
+}
+```
+```gdscript
+# Add Navigator as Autoload
+Navigator.setData(json.data.scenes)
+Navigator.change.connect(onSceneChange)
+Navigator.finished.connect(onAllSceneFinished)
+Navigator.first()
+```
+
 MP3Player
 ```gdscript
 # Add MP3PLayer as Autoload
