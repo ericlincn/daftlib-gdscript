@@ -94,3 +94,11 @@ MP3Player.playSound("res://sound/hit.mp3")
 MP3Player.stopAll()
 SoundUtil.setVolumeForBus(MP3Player.MUSIC, -10)
 ```
+
+SpineController
+```gdscript
+var spine = SpineController.new(%spine_sprite)
+print(spine.getAnimationNames())
+spine.playAnimation("idle")
+spine.handleSpineAudio(MP3Player.playSound)
+```
