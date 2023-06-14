@@ -135,6 +135,7 @@ SoundUtil.setVolumeForBus(MP3Player.MUSIC, -10)
 SpineCanvas
 ```gdscript
 var canvas:SpineCanvas = %SpineCanvas
+print(canvas.getAnimationNames())
 canvas.audio.connect(MP3Player.playSound)
 canvas.playAnimation()
 ```
