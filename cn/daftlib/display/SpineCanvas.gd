@@ -17,7 +17,6 @@ func _enter_tree() -> void:
 	
 	_sprite = self.get_child(0) as SpineSprite
 	_sprite.animation_event.connect(_onSpineEvent)
-	print(getAnimationNames())
 
 func _ready() -> void:
 	if auto_play: playAnimation()
