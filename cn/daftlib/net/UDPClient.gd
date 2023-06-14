@@ -13,25 +13,25 @@ var _port:int
 var _udp := PacketPeerUDP.new()
 var _connected:bool = false
 
-func _init(host:String = "127.0.0.1", port:int = 4242):
+func _init(host:String = "127.0.0.1", port:int = 4242) -> void:
 	_host = host
 	_port = port
 
-func _ready():
+func _ready() -> void:
 	_udp.connect_to_host(_host, _port)
 
-func _exit_tree():
+func _exit_tree() -> void:
 	_udp.close()
 
-func _notification(what):
+func _notification(what) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		_udp.close()
 
-func send_package(content:String):
+func send_package(content:String) -> void:
 	if _connected:
 		_udp.put_packet(content.to_utf8_buffer())
 
-func _process(_delta):
+func _process(_delta) -> void:
 	if !_connected:
 		# Try to contact server
 		_udp.put_packet("Client connecting...".to_utf8_buffer())

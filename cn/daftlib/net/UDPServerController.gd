@@ -13,17 +13,17 @@ var _server := UDPServer.new()
 var _peers:Array[PeerData] = []
 var _pulse_count:int = 0
 
-func _init(port:int = 4242):
+func _init(port:int = 4242) -> void:
 	_port = port
 
-func _ready():
+func _ready() -> void:
 	_server.listen(_port)
 	var timer:Timer = Timer.new()
 	self.add_child(timer)
 	timer.timeout.connect(_pulse_peers)
 	timer.start(1)
 
-func _process(_delta):
+func _process(_delta) -> void:
 	_server.poll() # Important!
 
 	if _server.is_connection_available():
@@ -43,7 +43,7 @@ func _process(_delta):
 	if _peers.size() > 0:
 		_check_packet()
 
-func _pulse_peers():
+func _pulse_peers() -> void:
 	if _peers.size() == 0: return
 	
 	if _pulse_count % 2 == 0:
@@ -53,13 +53,13 @@ func _pulse_peers():
 
 	_pulse_count += 1
 
-func _send_pulse():
+func _send_pulse() -> void:
 	for i in range(0, _peers.size()):
 		var data:PeerData = _peers[i]
 		data.is_alive = false
 		data.peer.put_packet(PULSE_MESSAGE.to_utf8_buffer())
 
-func _check_packet():
+func _check_packet() -> void:
 	for i in range(0, _peers.size()):
 		var data:PeerData = _peers[i]
 		if data.peer.get_available_packet_count():
@@ -71,7 +71,7 @@ func _check_packet():
 			elif content.length() > 0:
 				message.emit(content)
 
-func _update_alive():
+func _update_alive() -> void:
 	for i in range(_peers.size()-1, -1, -1):
 		var data:PeerData = _peers[i]
 		if data.is_alive == false:

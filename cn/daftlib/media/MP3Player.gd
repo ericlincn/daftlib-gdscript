@@ -1,3 +1,5 @@
+# Auto load by daftlib.gd
+
 extends Node
 
 const EXT:String = ".mp3"
@@ -10,7 +12,7 @@ var _currentMusicPlayer:AudioStreamPlayer
 var _currentMusicId:String = ""
 var _currentSoundPlayer:AudioStreamPlayer
 
-func playMusic(id:String, stream:AudioStreamMP3 = null):
+func playMusic(id:String, stream:AudioStreamMP3 = null) -> void:
 	if _currentMusicId == id:
 		return
 		
@@ -26,7 +28,7 @@ func playMusic(id:String, stream:AudioStreamMP3 = null):
 	_currentMusicPlayer.stream = _getStream(id, stream, MUSIC)
 	_currentMusicPlayer.play()
 
-func playSound(id:String, stream:AudioStreamMP3 = null):
+func playSound(id:String, stream:AudioStreamMP3 = null) -> void:
 	if _currentSoundPlayer:
 		SoundUtil.fadeoutAndFree(_currentSoundPlayer)
 	
@@ -37,22 +39,22 @@ func playSound(id:String, stream:AudioStreamMP3 = null):
 	_currentSoundPlayer.stream = _getStream(id, stream, SOUND)
 	_currentSoundPlayer.play()
 
-func stopMusic():
+func stopMusic() -> void:
 	if _currentMusicPlayer:
 		SoundUtil.fadeoutAndFree(_currentMusicPlayer)
 		_currentMusicId = ""
 		_currentMusicPlayer = null
 		
-func stopSound():
+func stopSound() -> void:
 	if _currentSoundPlayer:
 		SoundUtil.fadeoutAndFree(_currentSoundPlayer)
 		_currentSoundPlayer = null
 
-func stopAll():
+func stopAll() -> void:
 	stopMusic()
 	stopSound()
 
-func _getStream(id:String, stream:AudioStreamMP3, type:String):
+func _getStream(id:String, stream:AudioStreamMP3, type:String) -> AudioStreamMP3:
 	if !stream:
 		if id.contains(EXT):
 			stream = load(id) as AudioStreamMP3

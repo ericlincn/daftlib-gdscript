@@ -33,32 +33,32 @@ var __items:Array[Array] = []
 var __loaded:Dictionary = {}
 var __itemsLoaded:int = 0
 
-func _init():
+func _init() -> void:
 	self.clear()
 
-func clear():
+func clear() -> void:
 	self.__items = []
 	self.__loaded = {}
 
-func addItem(url, use_sub_threads:bool = false):
+func addItem(url, use_sub_threads:bool = false) -> void:
 	for item in __items:
 		if item[0] == url:
 			return
 	self.__items.append([url, use_sub_threads])
 
-func start():
+func start() -> void:
 	if len(self.__items) <= 0:
 		push_error("Error: Loading queue is empty")
 	
 	self.__itemsLoaded = 0
 	self.__load(self.__itemsLoaded)
 
-func getItem(key:String):
+func getItem(key:String) -> Variant:
 	if key in self.__loaded:
 		return self.__loaded.get(key)
 	return null
 
-func __load(index:int):
+func __load(index:int) -> void:
 	var item = self.__items[index]
 	var url = item[0]
 	var use_sub_threads = item[1]
@@ -66,7 +66,7 @@ func __load(index:int):
 	if error != OK:
 		push_error("Error: %s loading failed" % [url])
 
-func _process(_delta):
+func _process(_delta) -> void:
 	if len(self.__items) > 0:
 		var item = self.__items[self.__itemsLoaded]
 		var url = item[0]

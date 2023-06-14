@@ -2,38 +2,38 @@ class_name TransitionSprite
 
 extends Sprite2D
 
-enum FadeType {
-	Instant,
-	Fade,
-	Blend
+enum Type {
+	INSTANT,
+	FADE,
+	BLEND
 }
 
-enum FadeDirection {
-	In,
-	Out
+enum Direction {
+	IN,
+	OUT
 }
 
 signal complete
 
 var _total_time:float
 var _fade_time_seconds:float
-var _type:FadeType
-var _direction:FadeDirection
+var _type:Type
+var _direction:Direction
 var _shader_pattern:String
 
-func _init(type:FadeType, direction:FadeDirection, duration:float, shaderPattern:String = ""):
-	self._type = type if duration > 0 else FadeType.Instant
+func _init(type:Type, direction:Direction, duration:float, shader_pattern:String = "") -> void:
+	self._type = type if duration > 0 else Type.INSTANT
 	self._direction = direction
 	
-	self._fade_time_seconds = duration if self._type != FadeType.Instant else 0
-	self._shader_pattern = shaderPattern
-	
+	self._fade_time_seconds = duration if self._type != Type.INSTANT else 0
+	self._shader_pattern = shader_pattern
+
 	self.centered = false
 	
-	if self._type == FadeType.Blend:
+	if self._type == Type.BLEND:
 		self._loadShader()
 
-func _loadShader():
+func _loadShader() -> void:
 	var shader_material = ShaderMaterial.new()
 	shader_material.shader = preload("../shaders/dissolve.gdshader")
 	shader_material.set_shader_parameter("dissolve_texture", texture)
@@ -42,7 +42,7 @@ func _loadShader():
 	var shader_image = load(self._shader_pattern)
 	shader_material.set_shader_parameter("dissolve_texture", shader_image)
 
-func _process(delta:float):
+func _process(delta:float) -> void:
 	if _total_time >= _fade_time_seconds:
 		self.complete.emit()
 		queue_free()
@@ -50,10 +50,10 @@ func _process(delta:float):
 	_total_time += delta
 	var fade_amount = _total_time / _fade_time_seconds
 	
-	if self._direction == FadeDirection.In:
+	if self._direction == Direction.IN:
 		fade_amount = 1 - fade_amount
 	
-	if self._type == FadeType.Fade:
+	if self._type == Type.FADE:
 		self.modulate = Color(1, 1, 1, 1 - fade_amount)
-	elif self._type == FadeType.Blend:
+	elif self._type == Type.BLEND:
 		self.material.set_shader_parameter("dissolve_amount", fade_amount)

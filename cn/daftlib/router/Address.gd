@@ -1,14 +1,16 @@
 class_name Address
 
+extends IRouter
+
 signal change(value:String)
 
 var _history:Array[String]
 var _index:int
 
-func _init():
+func _init() -> void:
 	clear()
 
-func setValue(value:String):
+func setValue(value:String) -> void:
 	if value.length() == 0:
 		value = "/"
 	elif value.left(1) != "/":
@@ -21,7 +23,7 @@ func setValue(value:String):
 
 	_set_current(value)
 
-func up():
+func up() -> void:
 	var current:String = _history[_index]
 	if current == "/": return
 	
@@ -32,7 +34,7 @@ func up():
 	else:
 		setValue(current.substr(0, last_slash_index))
 
-func _set_current(value:String):
+func _set_current(value:String) -> void:
 	if _index < _history.size() - 1:
 		_history = _history.slice(0, _index + 1)
 	
@@ -40,21 +42,29 @@ func _set_current(value:String):
 	_index += 1
 	change.emit(value)
 
-func getValue():
+func getValue() -> String:
 	return _history[_index]
+	
+func getPreviousValue() -> String:
+	var i = _index
+	if i > 0: i -= 1
+	return _history[i]
 
-func back():
+func back() -> void:
 	if _index == 0: return
 	
 	_index -= 1
 	change.emit(_history[_index])
 
-func forward():
+func forward() -> void:
 	if _index == _history.size() - 1: return
 	
 	_index += 1
 	change.emit(_history[_index])
 
-func clear():
+func clear() -> void:
 	_history = ["/"]
 	_index = 0
+
+func isRoot() -> bool:
+	return getValue() == "/"
