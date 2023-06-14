@@ -32,8 +32,8 @@ imageTexture = DisplayObjectUtil.getScreenShotImageTexture(self)
 
 var duration = 0.5
 var pattern = "res://shader_images/squares.png"
-var fadeType = TransitionSprite.FadeType.Blend
-var fadeDirection = TransitionSprite.FadeDirection.Out
+var fadeType = TransitionSprite.Type.FADE
+var fadeDirection = TransitionSprite.Direction.OUT
 var sprite:TransitionSprite = TransitionSprite.new(fadeType, fadeDirection, duration, pattern)
 sprite.texture = imageTexture if duration > 0 else null
 self.add_child(sprite)
@@ -117,6 +117,10 @@ Navigator.setData(json.data.scenes)
 Navigator.change.connect(onSceneChange)
 Navigator.finished.connect(onAllSceneFinished)
 Navigator.first()
+
+func onSceneChange(_id:String, data:Dictionary):
+	var scene = load(data.get("packed_res")).instantiate()
+	self.addChild(scene)
 ```
 
 MP3Player
@@ -128,10 +132,9 @@ MP3Player.stopAll()
 SoundUtil.setVolumeForBus(MP3Player.MUSIC, -10)
 ```
 
-SpineController
+SpineCanvas
 ```gdscript
-var spine = SpineController.new(%spine_sprite)
-print(spine.getAnimationNames())
-spine.playAnimation("idle")
-spine.handleSpineAudio(MP3Player.playSound)
+var canvas:SpineCanvas = self.get_node(path)
+canvas.audio.connect(MP3Player.playSound)
+canvas.playAnimation()
 ```
