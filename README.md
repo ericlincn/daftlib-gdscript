@@ -113,7 +113,9 @@ Scenes Navigator
 ```
 ```gdscript
 # Add Navigator as Autoload
-Navigator.setData(json.data.scenes)
+for item in data.scenes:
+	var sceneId:String = item.get("id")
+	Navigator.link(sceneId, item)
 Navigator.change.connect(onSceneChange)
 Navigator.finished.connect(onAllSceneFinished)
 Navigator.first()
