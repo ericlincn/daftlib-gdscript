@@ -10,3 +10,6 @@ func getValue() -> String:
 
 func forward() -> void:
 	pass
+
+func clear() -> void:
+	pass

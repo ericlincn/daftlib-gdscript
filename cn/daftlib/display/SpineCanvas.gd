@@ -13,10 +13,11 @@ var _sprite:SpineSprite
 
 func _enter_tree() -> void:
 	if self.get_child_count() > 1:
-		push_error("SpineCanvas must be contains ONE SpineSprite node")
+		push_error("[SpineCanvas] must be contains ONE SpineSprite node")
 	
 	_sprite = self.get_child(0) as SpineSprite
 	_sprite.animation_event.connect(_onSpineEvent)
+	print(getAnimationNames())
 
 func _ready() -> void:
 	if auto_play: playAnimation()

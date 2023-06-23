@@ -1,77 +1,97 @@
+## Usage:
+## 
+## {
+##   "scenes": [
+## 	{
+## 	  "id": "scene1",
+## 	  "packed_res": "res://assets/scenes/scene1.tscn",
+## 	  "dialogues": []
+## 	},
+## 	{
+## 	  "id": "scene2",
+## 	  "packed_res": "res://assets/scenes/scene2.tscn",
+## 	  "dialogues": []
+## 	},
+## 	{
+## 	  "id": "scene3",
+## 	  "packed_res": "res://assets/scenes/scene3.tscn",
+## 	  "dialogues": []
+## 	}
+##   ]
+## }
+## 
+## for item in data.scenes:
+## 	var sceneId:String = item.get("id")
+## 	Navigator.link(sceneId, item)
+## 
+## Navigator.change.connect(onSceneChanged)
+## Navigator.finished.connect(onAllSceneFinished)
+## Navigator.first()
+## 
+## func onSceneChange(_id:String, data:Variant):
+## 	print(data.get("packed_res"))
+## 	SceneManager.changeScene(data)
+
 class_name Navigator
 
 extends IRouter
 
-signal change(id:String, data:Dictionary)
-signal finished(id_list:Array)
+signal change(value:String, data:Variant)
+signal finished
 
-var _id_list:Array[String]
+var _value_list:Array[String]
+var _value:String
 var _data_dict:Dictionary
-var _id:String
 
-# Data sample:
-#[
-#  {
-#    "id": "scene1",
-#    "packed_res": "res://assets/scenes/scene1.tscn",
-#    "dialogues": []
-#  },
-#  {
-#    "id": "scene2",
-#    "packed_res": "res://assets/scenes/scene2.tscn",
-#    "dialogues": []
-#  },
-#  {
-#    "id": "scene3",
-#    "packed_res": "res://assets/scenes/scene3.tscn",
-#    "dialogues": []
-#  }
-#]
+func _init() -> void:
+	clear()
 
-func setData(source:Array) -> void:
-	_id_list = []
+func clear() -> void:
+	_value_list = []
+	_value = ""
 	_data_dict = {}
-	_id = ""
-	
-	for item in source:
-		var id:String = item.get("id")
-		_id_list.append(id)
-		if _data_dict.get(id):
-			push_error("ID: %s already exist" % [id])
-		_data_dict[id] = item
-	print("[Navigator] Data count: ", _id_list.size())
+
+func link(value:String, data:Variant) -> void:
+	if _data_dict.get(value):
+		push_error("Value as key: %s already exist" % [value])
+	else:
+		_value_list.append(value)
+		_data_dict[value] = data
 
 func setValue(value:String) -> void:
-	if _id == value:
+	if _data_dict.get(value) == null:
 		return
 	
-	_id = value
-	change.emit(_id, _data_dict.get(value))
+	if _value == value:
+		return
+	
+	_value = value
+	change.emit(_value, _data_dict.get(value))
 
 func getValue() -> String:
-	return _id
+	return _value
 
 func forward() -> void:
-	if _id == "":
+	if _value == "":
 		first()
 	else:
-		var currentIndex = _id_list.find(_id)
+		var currentIndex = _value_list.find(_value)
 		var targetIndex = currentIndex + 1
-		if targetIndex >= _id_list.size():
-			finished.emit(_id_list)
+		if targetIndex >= _value_list.size():
+			finished.emit()
 		else:
-			var id:String = _id_list[targetIndex]
-			var data:Dictionary = _data_dict[id]
+			var value:String = _value_list[targetIndex]
+			var data:Variant = _data_dict[value]
 			if _check_condition(data) == true:
-				setValue(_id_list[targetIndex])
+				setValue(_value_list[targetIndex])
 			else:
-				print("[Navigator] ID: ", id, " condition not met, skipping...")
+				print("[Navigator] Value: ", value, " condition not met, skipping...")
 				# Skip to next scene, try to met condition again
-				_id = id
+				_value = value
 				forward()
 
 func first() -> void:
-	setValue(_id_list[0])
+	setValue(_value_list[0])
 
-func _check_condition(_data:Dictionary) -> bool:
+func _check_condition(_data:Variant) -> bool:
 	return true
