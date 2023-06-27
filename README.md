@@ -31,10 +31,11 @@ var imageTexture:ImageTexture = null
 imageTexture = DisplayObjectUtil.getScreenShotImageTexture(self)
 
 var duration = 0.5
-var pattern = "res://shader_images/squares.png"
-var fadeType = TransitionSprite.Type.FADE
-var fadeDirection = TransitionSprite.Direction.OUT
-var sprite:TransitionSprite = TransitionSprite.new(fadeType, fadeDirection, duration, pattern)
+var sprite:TransitionSprite = TransitionSprite.new()
+sprite.type = TransitionSprite.Type.FADE
+sprite.direction = TransitionSprite.Direction.OUT
+sprite.duration = duration
+sprite.shader_pattern_path = Global.transitionPattern
 sprite.texture = imageTexture if duration > 0 else null
 self.add_child(sprite)
 
