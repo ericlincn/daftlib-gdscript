@@ -15,19 +15,29 @@ enum Direction {
 
 signal complete
 
-var _total_time:float
 var _fade_time_seconds:float
+var duration:float:
+	set(value):
+		_fade_time_seconds = value
 var _type:Type
+var type:Type:
+	set(value):
+		_type = value
 var _direction:Direction
+var direction:Direction:
+	set(value):
+		_direction = value
 var _shader_pattern:String
+var shader_pattern_path:String:
+	set(value):
+		_shader_pattern = value
 
-func _init(type:Type, direction:Direction, duration:float, shader_pattern:String = "") -> void:
-	self._type = type if duration > 0 else Type.INSTANT
-	self._direction = direction
+var _total_time:float = 0.0
+
+func _enter_tree():
+	if self._fade_time_seconds == 0: self._type = Type.INSTANT
+	if self._type == Type.INSTANT: self._fade_time_seconds = 0
 	
-	self._fade_time_seconds = duration if self._type != Type.INSTANT else 0
-	self._shader_pattern = shader_pattern
-
 	self.centered = false
 	
 	if self._type == Type.BLEND:
