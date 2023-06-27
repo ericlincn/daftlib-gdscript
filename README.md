@@ -35,7 +35,7 @@ var sprite:TransitionSprite = TransitionSprite.new()
 sprite.type = TransitionSprite.Type.FADE
 sprite.direction = TransitionSprite.Direction.OUT
 sprite.duration = duration
-sprite.shader_pattern_path = Global.transitionPattern
+sprite.shader_pattern_path = "res://shader_images/squares.png"
 sprite.texture = imageTexture if duration > 0 else null
 self.add_child(sprite)
 
