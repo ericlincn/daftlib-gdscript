@@ -142,3 +142,12 @@ print(canvas.getAnimationNames())
 canvas.audio.connect(MP3Player.playSound)
 canvas.playAnimation()
 ```
+
+GameState
+```gdscript
+GameState.change.connect(onStateChange)
+GameState.current = GameState.TRANSITIONING
+GameState.current = GameState.GAME_PLAYING
+func onStateChange(_current:String, _previous:String):
+	print("GameState: ", _current, "PreviousState: ", _previous)
+```
