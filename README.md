@@ -152,21 +152,6 @@ func onStateChange(_current:String, _previous:String):
 	print("GameState: ", _current, "PreviousState: ", _previous)
 ```
 
-Observer Pattern
-```gdscript
-class OB:
-	func notificationHandler(notification:Notification) -> void:
-		print(notification.name, notification.body)
-
-# Add NotificationsCenter as Autoload
-var ob = OB.new()
-NotificationsCenter.register("NOTI_NAME", ob)
-
-# somewhere else ...
-
-NotificationsCenter.sendNotification("NOTI_NAME", {"name":"eric"})
-```
-
 SignalManager
 ```gdscript
 # Add SignalManager as Autoload
