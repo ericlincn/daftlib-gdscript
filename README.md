@@ -160,3 +160,63 @@ SignalManager.connectSignal(btn.pressed, _listenerB)
 SignalManager.connectSignal(btn.pressed, _listenerC.bind(args))
 SignalManager.disconnectAllForSignal(btn.pressed)
 ```
+
+Game Config
+```gdscript
+# Add Config as Autoload
+Config.add(VolumeControl.new(%vol_slider_1, MP3Player.MASTER))
+Config.add(VolumeControl.new(%vol_slider_2, MP3Player.MUSIC))
+Config.add(VolumeControl.new(%vol_slider_3, MP3Player.SOUND))
+Config.add(FullscreenControl.new(%checkbox))
+Config.add(LanguageControl.new(%option_button, ["en", "ja", "fr"]))
+Config.loadConfig()
+
+%apply_button.pressed.connect(_on_setting_apply)
+
+func _on_setting_apply():
+	Config.save()
+```
+
+Game Save
+```gdscript
+var save_resource:CustomResource = CustomResource.new()
+
+# create a new gamesave
+Saver.save(save_resource, DisplayObjectUtil.getScreenShotImage(%game_node))
+
+# overwrite exist gamesave
+Saver.overwrite("2023-06-30T21.28.40_4694A", save_resource, DisplayObjectUtil.getScreenShotImage(%game_node))
+
+# create a new autosave
+Saver.autosave(save_resource, DisplayObjectUtil.getScreenShotImage(%game_node))
+
+# load an exist gamesave
+save_resource = Saver.loadSave("2023-06-30T21.28.40_4694A")
+
+# load thumbnail for gamesave
+var image_texture := Saver.loadThumb("2023-06-30T21.28.40_4694A")
+
+# load newest gamesave
+save_resource = Saver.loadLatestSave()
+
+# load newest autosave
+save_resource = Saver.loadLatestAutosave()
+
+# get all manual gamesave
+print(Saver.getSaveSlots())
+
+# get all autosave
+print(Saver.getAutosaveSlots())
+
+# get all save
+print(Saver.getAllSaveSlots())
+
+# there is an exist save or not
+print(Saver.hasSave())
+
+# delete an exist gamesave
+deleteSaveAndSnapshot("2023-06-30T21.28.40_4694A")
+
+# get formated time string from filename, return as YYYY-MM-DD HH:MM:SS
+print(Saver.getTimeString("2023-06-30T21.28.40_4694A"))
+```
