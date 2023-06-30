@@ -11,7 +11,7 @@ func loadConfig() -> void:
 	var config = ConfigFile.new()
 	var err = config.load(CONFIG_PATH)
 	if err != OK:
-		_creat_config()
+		_create_config()
 		return
 	
 	# Fetch the data
@@ -19,7 +19,7 @@ func loadConfig() -> void:
 		var value = config.get_value(control.section, control.key)
 		control.setValue(value)
 
-func _creat_config() -> void:
+func _create_config() -> void:
 	print("[ProjectConfig] Create new config file")
 	save()
 
