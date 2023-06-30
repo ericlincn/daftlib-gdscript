@@ -180,6 +180,7 @@ func _on_setting_apply():
 Game Save
 ```gdscript
 # Add Saver as Autoload
+
 var save_resource:CustomResource = CustomResource.new()
 
 # create a new gamesave
