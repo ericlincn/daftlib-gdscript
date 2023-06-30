@@ -215,7 +215,7 @@ print(Saver.getAllSaveSlots())
 print(Saver.hasSave())
 
 # delete an exist gamesave
-deleteSaveAndSnapshot("2023-06-30T21.28.40_4694A")
+deleteSaveAndThumb("2023-06-30T21.28.40_4694A")
 
 # get formated time string from filename, return as YYYY-MM-DD HH:MM:SS
 print(Saver.getTimeString("2023-06-30T21.28.40_4694A"))
