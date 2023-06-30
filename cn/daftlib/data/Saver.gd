@@ -18,7 +18,7 @@ func save(resource:Resource, image:Image = null) -> String:
 	return base
 
 func overwrite(basename:String, resource:Resource, image:Image = null) -> String:
-	deleteSaveAndSnapshot(basename)
+	deleteSaveAndThumb(basename)
 	return save(resource, image)
 
 func autosave(resource:Resource, image:Image = null) -> String:
@@ -26,7 +26,7 @@ func autosave(resource:Resource, image:Image = null) -> String:
 	var list := getAutosaveSlots()
 	if list.size() >= AUTO_SLOT_COUNT:
 		for i in range(list.size() - 1, AUTO_SLOT_COUNT - 2, -1):
-			deleteSaveAndSnapshot(list[i])
+			deleteSaveAndThumb(list[i])
 	
 	_save_on_disk(base, resource, image)
 	return base
@@ -46,11 +46,11 @@ func loadLatestAutosave() -> Resource:
 	var slots := getAutosaveSlots()
 	return loadSave(slots[0])
 
-func loadSnapshot(basename:String) -> ImageTexture:
+func loadThumb(basename:String) -> ImageTexture:
 	if basename.length() <= 0:
 		return DisplayObjectUtil.getSingleColorImageTexture(THUMB_SIZE, THUMB_COLOR)
 	
-	var full_path = _get_snapshot_full_path(basename)
+	var full_path = _get_thumb_full_path(basename)
 	if not FileAccess.file_exists(full_path):
 		return DisplayObjectUtil.getSingleColorImageTexture(THUMB_SIZE, THUMB_COLOR)
 	
@@ -97,13 +97,13 @@ func isSameAsLatestAutosave(save:Resource, keys:Array[String]) -> bool:
 func hasSave() -> bool:
 	return _get_save_file_list().size() > 0
 
-func deleteSaveAndSnapshot(basename:String) -> void:
+func deleteSaveAndThumb(basename:String) -> void:
 	var err := DirAccess.remove_absolute(_get_save_full_path(basename))
 	if err != OK:
 		push_error("[Saver] deleting save failed")
-	err = DirAccess.remove_absolute(_get_snapshot_full_path(basename))
+	err = DirAccess.remove_absolute(_get_thumb_full_path(basename))
 	if err != OK:
-		push_error("[Saver] deleting snapshot failed")
+		push_error("[Saver] deleting thumbnail failed")
 
 func getTimeString(basename:String) -> String:
 	return _get_time_from_basename(basename)
@@ -121,7 +121,7 @@ func _get_save_file_list() -> Array[String]:
 func _get_save_full_path(basename:String) -> String:
 	return SAVE_PATH + basename + SAVE_EXT
 
-func _get_snapshot_full_path(basename:String) -> String:
+func _get_thumb_full_path(basename:String) -> String:
 	return SAVE_PATH + basename + THUMB_EXT
 
 func _get_basename_from_time(autosave:bool) -> String:
@@ -160,6 +160,6 @@ func _save_on_disk(basename:String, resource:Resource, image:Image) -> void:
 	if image.get_size() != THUMB_SIZE:
 		image.resize(THUMB_SIZE.x, THUMB_SIZE.y)
 	
-	err = image.save_png(_get_snapshot_full_path(basename))
+	err = image.save_png(_get_thumb_full_path(basename))
 	if err != OK:
-		push_error("[Saver] saving snapshot failed")
+		push_error("[Saver] saving thumbnail failed")
